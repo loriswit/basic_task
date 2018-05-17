@@ -1,0 +1,49 @@
+états :
+- trouver une couleur puis envoyer "trouver autre"
+- attendre un ordre et l'exécuter
+- PID
+- wall following
+
+message :
+- trouve rouge
+- trouve bleu
+- fais le PID
+
+paramètres :
+- couleur_à_trouver { rouge, bleu, peu importe }
+- peut_faire_le_PID { vrai, faux }
+
+pseudo-code :
+    while(true)
+        traite_message()
+
+        if(voit == couleur_à_trouver)
+            if(proche)
+                send(trouve_autre)
+                if(voit == rouge)
+                    send(fais_le_PID)
+                else if(fais_le_PID)
+                    break
+            else
+                love()
+
+        else
+            explore()
+
+        if(detecte_ligne)
+            se_barrer()
+
+    while(true)
+        fait_PID()
+        if(detecte_ligne)
+            break
+
+    while(true)
+        line_following()
+        if(detecte_mur)
+            break
+
+    while(true)
+        wall_folloing()
+        if(dectecte_coins)
+            break
