@@ -6,8 +6,8 @@
 /**
  * Enum constants representing the move behaviour of the robot.
  * <ul>
- *   <li><b>MOVE_LOVER</b>: the robots is attracted by nearby objects.</li>
- *   <li><b>MOVE_EXPLORER</b>: the robots avoids nearby objects.</li>
+ *   <li><b>MOVE_LOVER</b>: the robot is attracted by nearby objects.</li>
+ *   <li><b>MOVE_EXPLORER</b>: the robot avoids nearby objects.</li>
  * </ul>
  */
 typedef enum
@@ -40,5 +40,10 @@ bool detects_line();
  * @return <b>true</b> if a wall is detected, <b>false</b> if not
  */
 bool detects_wall();
+
+/**
+ * Changes the motors speed in order to avoid crossing ground lines.
+ */
+void avoid_lines();
 
 #endif //PROJECT_MOVE_H

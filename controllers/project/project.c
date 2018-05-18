@@ -47,6 +47,7 @@ int main()
         loop_end:;
         
         color_t current_color = get_color();
+        
         if(color_matches(color_to_find, current_color))
         {
             if(detects_wall())
@@ -66,7 +67,7 @@ int main()
         else
             move_as(MOVE_EXPLORER);
         
-        // TODO: do not cross lines
+        avoid_lines();
     }
     
     camera_stop();

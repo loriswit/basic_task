@@ -6,6 +6,7 @@
 #include "../util/motors.h"
 #include "../util/prox_sensors.h"
 #include "../util/ground_sensors.h"
+#include "../util/helpers.h"
 #include "../util/consts.h"
 
 #include "move.h"
@@ -55,7 +56,7 @@ void move_as(move_t behaviour)
 #define PID_T_I 9
 #define PID_T_D 0.35
 
-double calculate_pid(double proxLR)
+double calculate_pid(double prox)
 {
     static double error = 0;
     static double deriv = 0;
@@ -63,7 +64,7 @@ double calculate_pid(double proxLR)
     
     double prev_err = error;
     
-    error = proxLR - PID_WALL_FOLLOW_TARGET;
+    error = prox - PID_WALL_FOLLOW_TARGET;
     deriv = (error - prev_err) * 1000 / TIME_STEP;
     integ += error * TIME_STEP / 1000;
     
@@ -94,22 +95,32 @@ void follow_wall()
     motors_set_speed(speed_left, speed_right);
 }
 
-#define THRESHOLD_GROUND 300
+#define GROUND_THRESHOLD 600
 
 bool detects_line()
 {
-    double average_ground =
-            (ground_get_value(GROUND_LEFT) + ground_get_value(GROUND_CENTER) + ground_get_value(GROUND_RIGHT)) / 3;
+    double ground_value =
+            ground_get_value(GROUND_LEFT) +
+            ground_get_value(GROUND_CENTER) +
+            ground_get_value(GROUND_RIGHT);
     
-    if(average_ground < THRESHOLD_GROUND)
-        return true;
-    else
-        return false;
+    return (ground_value / GROUND_COUNT) < GROUND_THRESHOLD;
 }
 
-#define DISTANCE_THRESHOLD 2000
+#define WALL_THRESHOLD 1100
 
 bool detects_wall()
 {
-    return prox_get_value(0, true) + prox_get_value(7, true) / 2 > DISTANCE_THRESHOLD;
+    return prox_get_value(0, true) + prox_get_value(7, true) / 2 > WALL_THRESHOLD;
+}
+
+void avoid_lines()
+{
+    static double cooldown = 0;
+    
+    if(detects_line())
+        cooldown = now() + 1;
+    
+    if(cooldown > now())
+        motors_set_speed(MOTOR_SPEED, -MOTOR_SPEED);
 }
