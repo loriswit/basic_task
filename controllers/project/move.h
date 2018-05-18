@@ -16,6 +16,29 @@ typedef enum
 } move_t;
 
 /**
+ * Enum constants indicating on which side the robot should detect a wall.
+ */
+typedef enum
+{
+    WALL_LEFT, WALL_RIGHT, WALL_FRONT, WALL_BACK
+} wall_t;
+
+/**
+ * Enum constants representing rotation direction.
+ */
+typedef enum
+{
+    ROTATE_LEFT, ROTATE_RIGHT
+} rotate_t;
+
+/**
+ * Rotates in a specific direction.
+ *
+ * @param direction The rotation direction
+ */
+void rotate(rotate_t direction);
+
+/**
  * Moves the robot according to a specific behaviour.
  *
  * @param behaviour The behaviour of the robot, either <b>MOVE_LOVER</b> or <b>MOVE_EXPLORER</b>
@@ -40,11 +63,12 @@ void follow_line();
 bool detects_line();
 
 /**
- * Tells if the robot detects a wall in front of it.
+ * Tells if the robot detects a wall.
  *
+ * @param side The side which the robot should detect a wall
  * @return <b>true</b> if a wall is detected, <b>false</b> if not
  */
-bool detects_wall();
+bool detects_wall(wall_t side);
 
 /**
  * Changes the motors speed in order to avoid crossing ground lines.

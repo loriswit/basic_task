@@ -6,13 +6,12 @@
  * <ul>
  *   <li><b>MESSAGE_FIND_RED</b>: indicates that the others robot must find a red spot.</li>
  *   <li><b>MESSAGE_FIND_BLUE</b>: indicates that the others robot must find a blue spot.</li>
- *   <li><b>MESSAGE_DO_PID</b>: indicates that the others robot are allowed to start doing the PID.</li>
  *   <li><b>MESSAGE_NONE</b>: indicates that no message has been received.</li>
  * </ul>
  */
 typedef enum
 {
-    MESSAGE_FIND_RED, MESSAGE_FIND_BLUE, MESSAGE_DO_PID, MESSAGE_NONE
+    MESSAGE_FIND_RED, MESSAGE_FIND_BLUE, MESSAGE_NONE
 } message_t;
 
 /**

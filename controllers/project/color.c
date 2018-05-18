@@ -4,17 +4,17 @@
 
 #define BLUE_H_MIN  0.5
 #define BLUE_H_MAX  0.8
-#define BLUE_L_MIN  0.1
-#define BLUE_L_MAX  0.75
 #define BLUE_S_MIN  0.3
 #define BLUE_S_MAX  1
+#define BLUE_L_MIN  0.1
+#define BLUE_L_MAX  0.75
 
 #define RED_H_MIN   0
 #define RED_H_MAX   0.2
-#define RED_L_MIN   0.1
-#define RED_L_MAX   0.75
 #define RED_S_MIN   0.2
 #define RED_S_MAX   1
+#define RED_L_MIN   0.1
+#define RED_L_MAX   0.75
 
 #define get_max(a, b) (a) > (b) ? (a) : (b)
 #define get_min(a, b) (a) < (b) ? (a) : (b)
@@ -22,21 +22,21 @@
 #define is_between(value, min, max) ((value) >= (min) && (value) <= (max))
 
 #define is_red(color) is_between((color).h, RED_H_MIN, RED_H_MAX) \
-                   && is_between((color).l, RED_L_MIN, RED_L_MAX) \
-                   && is_between((color).s, RED_S_MIN, RED_S_MAX)
+                   && is_between((color).s, RED_S_MIN, RED_S_MAX) \
+                   && is_between((color).l, RED_L_MIN, RED_L_MAX)
 
 #define is_blue(color) is_between((color).h, BLUE_H_MIN, BLUE_H_MAX) \
-                    && is_between((color).l, BLUE_L_MIN, BLUE_L_MAX) \
-                    && is_between((color).s, BLUE_S_MIN, BLUE_S_MAX)
+                    && is_between((color).s, BLUE_S_MIN, BLUE_S_MAX) \
+                    && is_between((color).l, BLUE_L_MIN, BLUE_L_MAX)
 
 typedef struct
 {
     float h;
-    float l;
     float s;
-} hls_color;
+    float l;
+} hsl_color;
 
-hls_color to_hls(rgb_color input)
+hsl_color to_hsl(rgb_color input)
 {
     unsigned max = get_max(get_max(input.r, input.g), input.b);
     unsigned min = get_min(get_min(input.r, input.g), input.b);
@@ -69,13 +69,13 @@ hls_color to_hls(rgb_color input)
         hue /= 6;
     }
     
-    return (hls_color) {hue, light, sat};
+    return (hsl_color) {hue, sat, light};
 }
 
 color_t get_color()
 {
     rgb_color average = camera_get_average_color();
-    hls_color color = to_hls(average);
+    hsl_color color = to_hsl(average);
     
     if(is_blue(color))
         return COLOR_BLUE;

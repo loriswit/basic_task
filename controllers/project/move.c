@@ -6,7 +6,6 @@
 #include "../util/motors.h"
 #include "../util/prox_sensors.h"
 #include "../util/ground_sensors.h"
-#include "../util/helpers.h"
 #include "../util/consts.h"
 
 #include "move.h"
@@ -27,6 +26,14 @@ double array_sum(const double array[], size_t length)
         sum += array[i];
     
     return sum;
+}
+
+void rotate(rotate_t direction)
+{
+    if(direction == ROTATE_LEFT)
+        motors_set_speed(-MOTOR_SPEED, MOTOR_SPEED);
+    else
+        motors_set_speed(MOTOR_SPEED, -MOTOR_SPEED);
 }
 
 #define PROX_THRESHOLD 400
@@ -120,7 +127,7 @@ void follow_line()
     motors_set_speed(speed_left, speed_right);
 }
 
-#define GROUND_THRESHOLD 600
+#define GROUND_THRESHOLD 500
 
 bool detects_line()
 {
@@ -132,22 +139,42 @@ bool detects_line()
     return (ground_value / GROUND_COUNT) < GROUND_THRESHOLD;
 }
 
-#define WALL_THRESHOLD 1100
+#define WALL_THRESHOLD 1000
 
-bool detects_wall()
+bool detects_wall(wall_t side)
 {
-    return (prox_get_value(0, true) + prox_get_value(7, true)) / 2 > WALL_THRESHOLD;
+    static const size_t sensors[4][2] = {
+            {5, 6}, // WALL_LEFT
+            {1, 2}, // WALL_RIGHT
+            {7, 0}, // WALL_FRONT
+            {3, 4}  // WALL_BACK
+    };
+    
+    double prox_value = prox_get_value(sensors[side][0], true) + prox_get_value(sensors[side][1], true);
+    return prox_value / 2 > WALL_THRESHOLD;
 }
-
-#define ROTATION_DURATION 1
 
 void avoid_lines()
 {
-    static double cooldown = 0;
+    typedef enum
+    {
+        SENSOR_LEFT, SENSOR_RIGHT, SENSOR_NONE
+    } sensor_t;
     
-    if(detects_line())
-        cooldown = now() + ROTATION_DURATION;
+    static sensor_t sensor = SENSOR_NONE;
     
-    if(cooldown > now())
-        motors_set_speed(MOTOR_SPEED, -MOTOR_SPEED);
+    if(sensor == SENSOR_LEFT && ground_get_value(GROUND_LEFT) > GROUND_THRESHOLD)
+        sensor = SENSOR_NONE;
+    if(sensor == SENSOR_RIGHT && ground_get_value(GROUND_RIGHT) > GROUND_THRESHOLD)
+        sensor = SENSOR_NONE;
+    
+    if(sensor == SENSOR_NONE && ground_get_value(GROUND_LEFT) < GROUND_THRESHOLD)
+        sensor = SENSOR_LEFT;
+    if(sensor == SENSOR_NONE && ground_get_value(GROUND_RIGHT) < GROUND_THRESHOLD)
+        sensor = SENSOR_RIGHT;
+    
+    if(sensor == SENSOR_LEFT)
+        rotate(ROTATE_RIGHT);
+    if(sensor == SENSOR_RIGHT)
+        rotate(ROTATE_LEFT);
 }

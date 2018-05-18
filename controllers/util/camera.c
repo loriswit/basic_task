@@ -13,9 +13,9 @@ static int height;
 void camera_init()
 {
     camera = wb_robot_get_device("camera");
-    wb_camera_enable(camera, CAM_RATE * TIME_STEP);
     width = wb_camera_get_width(camera);
     height = wb_camera_get_height(camera);
+    wb_camera_enable(camera, CAM_RATE * TIME_STEP);
 }
 
 void camera_stop()
