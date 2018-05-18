@@ -28,6 +28,11 @@ void move_as(move_t behaviour);
 void follow_wall();
 
 /**
+ * Moves the robot such as it sticks to a line along its path.
+ */
+void follow_line();
+
+/**
  * Tells if the robot detects a line on the ground.
  *
  * @return <b>true</b> if a line is detected, <b>false</b> if not

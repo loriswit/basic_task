@@ -11,6 +11,7 @@
 #include "../util/camera.h"
 #include "../util/com.h"
 #include "../util/consts.h"
+#include "../util/helpers.h"
 
 #define running wb_robot_step(TIME_STEP) != -1
 
@@ -72,10 +73,43 @@ int main()
     
     camera_stop();
     
-    // TODO: execute PID
+    double cooldown = now() + 0.7;
+    while(running)
+    {
+        if(cooldown > now())
+            motors_set_speed(-3, 3);
+        else
+            follow_wall();
+        if(detects_line())
+            break;
+    }
     
-    // TODO: phase 2
+    motors_stop();
+    message_send(MESSAGE_FIND_BLUE);
     
+    cooldown = now() + 0.7;
+    while(running)
+    {
+        if(cooldown > now())
+            motors_set_speed(-3, 3);
+        else
+            follow_line();
+        if(detects_wall())
+            break;
+    }
+    
+    cooldown = now() + 0.7;
+    while(running)
+    {
+        if(cooldown > now())
+            motors_set_speed(-3, 3);
+        else
+            follow_wall();
+        if(cooldown + 3 < now() && detects_line())
+            break;
+    }
+    
+    motors_stop();
     message_send(MESSAGE_DO_PID);
     
     wb_robot_cleanup();
