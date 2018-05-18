@@ -7,8 +7,8 @@
 #include "com.h"
 #include "consts.h"
 
-WbDeviceTag emitter;
-WbDeviceTag receiver;
+static WbDeviceTag emitter;
+static WbDeviceTag receiver;
 
 void com_init()
 {

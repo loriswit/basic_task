@@ -5,8 +5,8 @@
 
 #define MAX_SPEED 6.28
 
-WbDeviceTag left_motor;
-WbDeviceTag right_motor;
+static WbDeviceTag left_motor;
+static WbDeviceTag right_motor;
 
 // returns a value clamped between min and max
 double clamp(double value, double min, double max)

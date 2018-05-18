@@ -5,8 +5,8 @@
 #include "leds.h"
 #include "consts.h"
 
-WbDeviceTag sensors[PROX_COUNT];
-double corrections[PROX_COUNT] = {0, 0};
+static WbDeviceTag sensors[PROX_COUNT];
+static double corrections[PROX_COUNT] = {0};
 
 #define CALIB_COUNT 50
 #define CALIB_OFFSET 5

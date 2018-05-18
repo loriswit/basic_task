@@ -6,9 +6,9 @@
 #include "camera.h"
 #include "consts.h"
 
-WbDeviceTag camera;
-int width;
-int height;
+static WbDeviceTag camera;
+static int width;
+static int height;
 
 void camera_init()
 {

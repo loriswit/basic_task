@@ -4,7 +4,7 @@
 #include "ground_sensors.h"
 #include "consts.h"
 
-WbDeviceTag sensors[GROUND_COUNT];
+static WbDeviceTag sensors[GROUND_COUNT];
 
 void ground_init()
 {

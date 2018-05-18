@@ -5,7 +5,7 @@
 
 #include "leds.h"
 
-WbDeviceTag leds[LEDS_COUNT];
+static WbDeviceTag leds[LEDS_COUNT];
 
 void leds_init()
 {
