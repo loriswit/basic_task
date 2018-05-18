@@ -16,6 +16,11 @@ typedef struct
 void camera_init();
 
 /**
+ * Turns the camera off.
+ */
+void camera_stop();
+
+/**
  * Computes and returns the average color of the current image.
  *
  * @return The average RGB color

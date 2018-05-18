@@ -18,6 +18,11 @@ void camera_init()
     height = wb_camera_get_height(camera);
 }
 
+void camera_stop()
+{
+    wb_camera_disable(camera);
+}
+
 rgb_color camera_get_average_color()
 {
     const unsigned char * image = wb_camera_get_image(camera);

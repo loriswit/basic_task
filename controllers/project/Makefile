@@ -3,7 +3,7 @@
 
 CFLAGS = -std=c11 -D__USE_MINGW_ANSI_STDIO
 
-C_SOURCES = project.c
+C_SOURCES = $(wildcard *.c)
 include ../util/Makefile
 
 ### Do not modify: this includes Webots global Makefile.include
