@@ -2,6 +2,7 @@
 #define ROBOTICS_COM_H
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define COM_CHANNEL 1
 

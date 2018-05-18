@@ -18,9 +18,9 @@ int main()
 {
     wb_robot_init();
     motors_init();
+    leds_init();
     prox_init();
     ground_init();
-    leds_init();
     camera_init();
     com_init();
     
@@ -47,11 +47,11 @@ int main()
         loop_end:;
         
         color_t current_color = get_color();
-        
         if(color_matches(color_to_find, current_color))
         {
             if(detects_wall())
             {
+                motors_stop();
                 message_send(current_color == COLOR_RED ? MESSAGE_FIND_BLUE : MESSAGE_FIND_RED);
                 
                 if(current_color == COLOR_RED)

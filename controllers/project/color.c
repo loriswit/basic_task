@@ -2,17 +2,17 @@
 
 #include "color.h"
 
-#define BLUE_H_MIN  0.45
+#define BLUE_H_MIN  0.5
 #define BLUE_H_MAX  0.8
 #define BLUE_L_MIN  0.1
-#define BLUE_L_MAX  0.95
+#define BLUE_L_MAX  0.75
 #define BLUE_S_MIN  0.3
 #define BLUE_S_MAX  1
 
 #define RED_H_MIN   0
-#define RED_H_MAX   0.4
+#define RED_H_MAX   0.2
 #define RED_L_MIN   0.1
-#define RED_L_MAX   0.9
+#define RED_L_MAX   0.75
 #define RED_S_MIN   0.2
 #define RED_S_MAX   1
 
@@ -78,9 +78,11 @@ color_t get_color()
     hls_color color = to_hls(average);
     
     if(is_blue(color))
-        return COLOR_RED;
+        return COLOR_BLUE;
+    
     else if(is_red(color))
         return COLOR_RED;
+    
     else
         return COLOR_NONE;
 }

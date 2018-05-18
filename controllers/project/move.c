@@ -28,27 +28,24 @@ double array_sum(const double array[], size_t length)
     return sum;
 }
 
-#define THRESHOLD_SPEED 400
+#define PROX_THRESHOLD 400
 
 void move_as(move_t behaviour)
 {
     static const double lover_weights[PROX_COUNT] = {2, 2, 3, 4, 4, 3, 2, 2};
     static const double explorer_weights[PROX_COUNT] = {4, 3, 2, 1, 1, 2, 3, 4};
     
-    const double lover_total_weight = array_sum(lover_weights, PROX_COUNT);
-    const double explorer_total_weight = array_sum(explorer_weights, PROX_COUNT);
+    const double total_weight = array_sum(behaviour == MOVE_LOVER ? lover_weights : explorer_weights, PROX_COUNT);
     
-    double prox[2] = {0, 0};
+    double prox[2] = {0};
     for(size_t i = 0; i < PROX_COUNT; ++i)
     {
         double weight = behaviour == MOVE_LOVER ? lover_weights[i] : explorer_weights[i];
-        double total_weight = behaviour == MOVE_LOVER ? lover_total_weight : explorer_total_weight;
-        prox[i * 2 / PROX_COUNT] +=
-                weight * prox_get_value(i, true) / total_weight;
+        prox[i * 2 / PROX_COUNT] += weight * prox_get_value(i, true) / total_weight;
     }
     
-    double speed_right = MOTOR_SPEED - prox[behaviour == MOVE_LOVER ? 0 : 1] / THRESHOLD_SPEED * MOTOR_SPEED;
-    double speed_left = MOTOR_SPEED - prox[behaviour == MOVE_LOVER ? 1 : 0] / THRESHOLD_SPEED * MOTOR_SPEED;
+    double speed_right = MOTOR_SPEED - prox[behaviour == MOVE_LOVER ? 0 : 1] / PROX_THRESHOLD * MOTOR_SPEED;
+    double speed_left = MOTOR_SPEED - prox[behaviour == MOVE_LOVER ? 1 : 0] / PROX_THRESHOLD * MOTOR_SPEED;
     
     motors_set_speed(speed_left, speed_right);
 }
@@ -110,8 +107,9 @@ bool detects_line()
         return false;
 }
 
+#define DISTANCE_THRESHOLD 2000
+
 bool detects_wall()
 {
-    // TODO: implementation
-    return false;
+    return prox_get_value(0, true) + prox_get_value(7, true) / 2 > DISTANCE_THRESHOLD;
 }
