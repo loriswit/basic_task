@@ -45,14 +45,23 @@ int main()
             }
         loop_end:;
         
+        if(color_found == COLOR_BLUE)
+        {
+            led_set(0, true);
+            led_set(1, true);
+            led_set(2, true);
+        }
+        else if(color_found == COLOR_RED)
+        {
+            led_set(0, true);
+            led_set(6, true);
+            led_set(7, true);
+        }
+        
         if(color_matches(color_to_find, color_found))
         {
             if(color_to_find == COLOR_BLUE)
-            {
-                led_set(0, true);
-                led_set(7, true);
                 break;
-            }
             else
                 continue;
         }
@@ -74,18 +83,7 @@ int main()
             if(detects_wall(WALL_FRONT))
             {
                 color_found = current_color;
-                if(color_found == COLOR_BLUE)
-                {
-                    led_set(0, true);
-                    led_set(1, true);
-                    led_set(2, true);
-                }
-                else if(color_found == COLOR_RED)
-                {
-                    led_set(0, true);
-                    led_set(6, true);
-                    led_set(7, true);
-                }
+                
                 motors_stop();
                 camera_stop();
                 
