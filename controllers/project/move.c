@@ -63,7 +63,6 @@ void move_as(move_t behaviour)
 }
 
 #define PID_WALL_FOLLOW_TARGET 700
-#define PID_K 0.0015
 
 double calculate_pid(double prox, double k, double ti, double td)
 {
@@ -82,11 +81,6 @@ double calculate_pid(double prox, double k, double ti, double td)
 
 void do_pid(double speed, double k, double ti, double td, const double weights[PROX_COUNT])
 {
-    leds_set(false);
-    led_set(1, true);
-    led_set(2, true);
-    led_set(3, true);
-    
     double prox = 0;
     for(size_t i = 0; i < PROX_COUNT; ++i)
         prox += weights[i] * prox_get_value(i, true);
@@ -103,13 +97,23 @@ void do_pid(double speed, double k, double ti, double td, const double weights[P
 
 void follow_wall()
 {
-    static const double weights[PROX_COUNT] = {3, 1, 1, 0, 0, 0, 0, 0};
+    leds_set(false);
+    led_set(4, true);
+    led_set(5, true);
+    led_set(6, true);
+    
+    static const double weights[PROX_COUNT] = {0, 0, 0, 0, 0, 1, 1, 3};
     do_pid(MOTOR_SPEED * 1.5, 0.0015, 6, 0.05, weights);
 }
 
 void follow_block()
 {
-    static const double weights[PROX_COUNT] = {0, 0, 0, 0, 0, 1, 1, 3};
+    leds_set(false);
+    led_set(1, true);
+    led_set(2, true);
+    led_set(3, true);
+    
+    static const double weights[PROX_COUNT] = {3, 1, 1, 0, 0, 0, 0, 0};
     do_pid(MOTOR_SPEED * 0.8, 0.0015, 10, 0.2, weights);
 }
 

@@ -140,7 +140,7 @@ int main()
     
     while(running)
     {
-        if(!detects_wall(WALL_RIGHT))
+        if(!detects_wall(WALL_LEFT))
             rotate(ROTATE_RIGHT);
         else
             break;
