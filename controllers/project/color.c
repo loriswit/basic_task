@@ -9,12 +9,12 @@
 #define BLUE_L_MIN  0.1
 #define BLUE_L_MAX  0.75
 
-#define RED_H_MIN   0
-#define RED_H_MAX   0.2
+#define RED_H_MIN   0.85
+#define RED_H_MAX   1
 #define RED_S_MIN   0.2
 #define RED_S_MAX   1
 #define RED_L_MIN   0.1
-#define RED_L_MAX   0.75
+#define RED_L_MAX   0.9
 
 #define get_max(a, b) (a) > (b) ? (a) : (b)
 #define get_min(a, b) (a) < (b) ? (a) : (b)

@@ -75,7 +75,7 @@ double calculate_pid(double prox)
     deriv = (error - prev_err) * 1000 / TIME_STEP;
     integ += error * TIME_STEP / 1000;
     
-    return PID_K * error; // + PID_K * PID_T_D * deriv + PID_K / PID_T_I * integ;
+    return PID_K * error + PID_K * PID_T_D * deriv + PID_K / PID_T_I * integ;
 }
 
 void follow_wall()
@@ -139,7 +139,7 @@ bool detects_line()
     return (ground_value / GROUND_COUNT) < GROUND_THRESHOLD;
 }
 
-#define WALL_THRESHOLD 1000
+#define WALL_THRESHOLD 800
 
 bool detects_wall(wall_t side)
 {

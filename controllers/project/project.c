@@ -44,7 +44,12 @@ int main()
         loop_end:;
         
         if(color_matches(color_to_find, color_found))
-            continue;
+        {
+            if(color_to_find == COLOR_BLUE)
+                break;
+            else
+                continue;
+        }
         
         else if(color_found != COLOR_NONE && color_found != color_to_find)
         {
@@ -64,9 +69,6 @@ int main()
                 camera_stop();
                 
                 message_send(current_color == COLOR_RED ? MESSAGE_FIND_BLUE : MESSAGE_FIND_RED);
-                
-                if(color_to_find == COLOR_BLUE)
-                    break;
             }
             else
                 move_as(MOVE_LOVER);
@@ -93,11 +95,17 @@ int main()
             break;
     }
     
-    motors_stop();
+    while(running)
+    {
+        follow_wall();
+        
+        if(!detects_line())
+            break;
+    }
     
     while(running)
     {
-        if(!detects_wall(WALL_BACK))
+        if(ground_get_value(GROUND_RIGHT) > 500)
             rotate(ROTATE_LEFT);
         else
             break;
