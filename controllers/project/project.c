@@ -108,7 +108,7 @@ int main()
     
     while(running)
     {
-        follow_wall(false);
+        follow_block();
         
         if(detects_line())
             break;
@@ -116,7 +116,7 @@ int main()
     
     while(running)
     {
-        follow_wall(false);
+        follow_block();
         
         if(!detects_line())
             break;
@@ -141,14 +141,14 @@ int main()
     while(running)
     {
         if(!detects_wall(WALL_RIGHT))
-            rotate(ROTATE_LEFT);
+            rotate(ROTATE_RIGHT);
         else
             break;
     }
     
     while(running)
     {
-        follow_wall(true);
+        follow_wall();
         
         if(detects_line() || message_receive() == MESSAGE_STOP)
             break;
