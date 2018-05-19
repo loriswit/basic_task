@@ -108,7 +108,7 @@ int main()
     
     while(running)
     {
-        follow_wall();
+        follow_wall(false);
         
         if(detects_line())
             break;
@@ -116,7 +116,7 @@ int main()
     
     while(running)
     {
-        follow_wall();
+        follow_wall(false);
         
         if(!detects_line())
             break;
@@ -148,7 +148,7 @@ int main()
     
     while(running)
     {
-        follow_wall();
+        follow_wall(true);
         
         if(detects_line() || message_receive() == MESSAGE_STOP)
             break;

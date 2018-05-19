@@ -64,10 +64,8 @@ void move_as(move_t behaviour)
 
 #define PID_WALL_FOLLOW_TARGET 700
 #define PID_K 0.0015
-#define PID_T_I 6
-#define PID_T_D 0.05
 
-double calculate_pid(double prox)
+double calculate_pid(double prox, double ti, double td)
 {
     static double error = 0;
     static double deriv = 0;
@@ -79,10 +77,10 @@ double calculate_pid(double prox)
     deriv = (error - prev_err) * 1000 / TIME_STEP;
     integ += error * TIME_STEP / 1000;
     
-    return PID_K * error + PID_K * PID_T_D * deriv + PID_K / PID_T_I * integ;
+    return PID_K * error + PID_K * td * deriv + PID_K / ti * integ;
 }
 
-void follow_wall()
+void follow_wall(bool fast)
 {
     leds_set(false);
     led_set(1, true);
@@ -97,10 +95,16 @@ void follow_wall()
     
     prox_right /= array_sum(weights, PROX_COUNT);
     
-    double ds = calculate_pid(prox_right);
+    double ds;
+    if(fast)
+        ds = calculate_pid(prox_right, 6, 0.05);
+    else
+        ds = calculate_pid(prox_right, 10, 0.35);
     
-    double speed_right = (fabs(ds) > 1 ? 0 : MOTOR_SPEED) + ds;
-    double speed_left = (fabs(ds) > 1 ? 0 : MOTOR_SPEED) - ds;
+    double speed = MOTOR_SPEED * (fast ? 1.5 : 1);
+    
+    double speed_right = (fabs(ds) > 1 ? 0 : speed) + ds;
+    double speed_left = (fabs(ds) > 1 ? 0 : speed) - ds;
     
     motors_set_speed(speed_left, speed_right);
 }

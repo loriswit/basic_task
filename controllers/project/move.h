@@ -48,7 +48,7 @@ void move_as(move_t behaviour);
 /**
  * Moves the robot such as it sticks to a wall along its path.
  */
-void follow_wall();
+void follow_wall(bool fast);
 
 /**
  * Moves the robot such as it sticks to a line along its path.
