@@ -1,5 +1,5 @@
-#ifndef PROJECT_MOVE_H
-#define PROJECT_MOVE_H
+#ifndef BASIC_TASK_MOVE_H
+#define BASIC_TASK_MOVE_H
 
 #include <stdbool.h>
 
@@ -16,12 +16,11 @@ typedef enum
 } move_t;
 
 /**
- * Enum constants indicating on which side the robot should detect a wall.
+ * Moves the robot according to a specific behaviour.
+ *
+ * @param behaviour The behaviour of the robot, either <b>MOVE_LOVER</b> or <b>MOVE_EXPLORER</b>
  */
-typedef enum
-{
-    WALL_LEFT, WALL_RIGHT, WALL_FRONT, WALL_BACK
-} wall_t;
+void move_as(move_t behaviour);
 
 /**
  * Enum constants representing rotation direction.
@@ -39,45 +38,35 @@ typedef enum
 void rotate(rotate_t direction);
 
 /**
- * Moves the robot according to a specific behaviour.
+ * Enum constants indicating on which side the robot should follow the wall.
+ */
+typedef enum
+{
+    SIDE_LEFT, SIDE_RIGHT
+} side_t;
+
+/**
+ * Moves the robot such as it sticks to walls detected by proximity sensors along its path.
+ * This function uses a PID algorithm.
  *
- * @param behaviour The behaviour of the robot, either <b>MOVE_LOVER</b> or <b>MOVE_EXPLORER</b>
+ * @param side The side which the robot should to follow, either WALL_LEFT or WALL_RIGHT
+ * @param multiplier The speed multiplier.
+ * @param k Proportional parameter
+ * @param ti Integral parameter
+ * @param td Differential parameter
  */
-void move_as(move_t behaviour);
+void follow_prox(double multiplier, side_t side, double k, double ti, double td);
 
 /**
- * Moves the robot such as it sticks to a wall along its path.
- */
-void follow_wall();
-
-/**
- * Moves the robot such as it sticks to a block along its path.
- */
-void follow_block();
-
-/**
- * Moves the robot such as it sticks to a line along its path.
- */
-void follow_line();
-
-/**
- * Tells if the robot detects a line on the ground.
+ * Moves the robot such as it sticks to lines detected by ground sensors along its path.
  *
- * @return <b>true</b> if a line is detected, <b>false</b> if not
+ * @param multiplier The speed multiplier.
  */
-bool detects_line();
-
-/**
- * Tells if the robot detects a wall.
- *
- * @param side The side which the robot should detect a wall
- * @return <b>true</b> if a wall is detected, <b>false</b> if not
- */
-bool detects_wall(wall_t side);
+void follow_ground(double multiplier);
 
 /**
  * Changes the motors speed in order to avoid crossing ground lines.
  */
 void avoid_lines();
 
-#endif //PROJECT_MOVE_H
+#endif //BASIC_TASK_MOVE_H
